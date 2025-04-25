@@ -59,13 +59,13 @@ void setupDinoBirdSprite(Sprite* dinobird, int screenHeight) {
 void setupCactusSprite(Cactus* cactus, int screenWidth, int screenHeight){
     cactus->tex = LoadTexture("../res/cactus.png");
     cactus->size = sizeof(cactus->srect)/sizeof(cactus->srect[0]);
-    std::cout << "cactus->size : " << cactus->size << std::endl;
     cactus->actualWidth = cactus->actualHeight = 64;
     cactus->pos[0] = (Vector2) { (float)screenWidth, (float) (screenHeight*0.7f - cactus->actualHeight) };
-    cactus->srect[0] = (Rectangle) { (float)((rand()%3) * cactus->actualWidth), 0, (float)cactus->actualWidth, (float)cactus->actualHeight };
+    cactus->srect[0] = (Rectangle) { (float)(2 * cactus->actualWidth), 0, (float)cactus->actualWidth, (float)cactus->actualHeight };
+    std::cout << "cactus->size : " << cactus->size << std::endl;
     for(int i = 1; i < cactus->size; i++) {
         cactus->pos[i] = (Vector2) { cactus->pos[i-1].x+rand()%screenWidth+screenWidth/2, screenHeight*0.7f - cactus->actualHeight };
-        cactus->srect[i] = (Rectangle) { (float)((rand()%3)*cactus->actualWidth), 0, (float)cactus->actualWidth, (float)cactus->actualHeight };
+        cactus->srect[i] = (Rectangle) { (float)(2 * cactus->actualWidth), 0, (float)cactus->actualWidth, (float)cactus->actualHeight };
     }
     cactus->speed = 9;
 }
@@ -198,6 +198,7 @@ int main(void) {
         ClearBackground(RAYWHITE);
         DrawLineEx((Vector2) { 0, screenHeight*0.7 }, (Vector2) { screenWidth, screenHeight*0.7 }, 5, BLACK);
 
+        DrawRectangle(dino.pos.x, dino.pos.y, dino.actualWidth, dino.actualHeight, RED);
         DrawTextureRec(dino.tex, dino.srect[dino.currentFrame], dino.pos, WHITE);
 
         if(birdfly) {
@@ -206,6 +207,7 @@ int main(void) {
 
         for(int i = 0; i < cactus.size; i++) {
             if(cactus.pos[i].x > -cactus.actualWidth && cactus.pos[i].x < screenWidth) {
+                DrawRectangle(cactus.pos[i].x, cactus.pos[i].y, cactus.actualWidth, dino.actualHeight, GREEN);
                 DrawTextureRec(cactus.tex, cactus.srect[i], cactus.pos[i], WHITE);
             }
         }
